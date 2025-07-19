@@ -1,0 +1,22 @@
+# name: 1.0.$(BuildID)
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infra/*
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: Dev
+    dependsOn: Build
+    displayName: "Dev"
+    jobs:
+      - template: InfraDeployTemplates/deployresources.yml
+        parameters:
+          environment: "dev"
+          serviceconnection: "arm-svc-con"

@@ -1,14 +1,9 @@
 using 'main.bicep'
 
-param environment =  'dev'
 param projectName =  'onlinestore'
+param environment =  'dev'
 param location = 'uksouth'
 param resourceInstance = '001'
-
-// Pipeline Agents
-param virtualMachineName =  'REPLACE_ME'
-param virtualMachineUser =  'REPLACE_ME'
-param virtualMachinePassword =  'REPLACE_ME'
 
 // Network
 param vnetAddressPrefix = '10.0.0.0/16'

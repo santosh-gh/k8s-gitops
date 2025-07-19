@@ -7,20 +7,15 @@ param projectName string
 @description('Environment name')
 param environment string
 
-@description('Primary location for the resources')
-param location string = deployment().location //uksouth
-
 @description('Primary Resource Instance')
 param resourceInstance string
+
+@description('Primary location for the resources')
+param location string
 
 // Netework parameters
 param vnetAddressPrefix string
 param subnets array = []
-
-// Virtual Machine parameters
-param virtualMachineName string
-param virtualMachineUser string
-param virtualMachinePassword string
 
 var resourceLocator = '${projectName}-${environment}-${location}-${resourceInstance}'
 
