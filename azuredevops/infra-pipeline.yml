@@ -13,7 +13,6 @@ pool:
 
 stages:
   - stage: Dev
-    dependsOn: Build
     displayName: "Dev"
     jobs:
       - template: InfraDeployTemplates/deployresources.yml
