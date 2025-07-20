@@ -20,8 +20,8 @@ jobs:
                 scriptLocation: 'inlineScript'
                 workingDirectory: $(Pipeline.Workspace)
                 inlineScript: |
-                  $filename = "$(Pipeline.Workspace)/infra/main.bicep"
-                  $parametersfilename = "$(Pipeline.Workspace)/infra/main.bicepparam"                 
+                  $filename = "$(Pipeline.Workspace)/infra/bicep/main.bicep"
+                  $parametersfilename = "$(Pipeline.Workspace)/infra/bicep/main.bicepparam"                 
                   Write-Host "STARTING DEPLOYMENT......."
                   
                   $validationResult = az deployment sub create --location uksouth --template-file $filename --parameters $parametersfilename
