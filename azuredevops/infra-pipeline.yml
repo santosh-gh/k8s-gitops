@@ -12,13 +12,13 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: Build
-    displayName: "Infra Validatation"
-    jobs:
-      - template: InfradeployTemplates/infravalidation.yml
-        parameters:
-          environment: "dev"
-          serviceconnection: "arm-svc-con"
+  # - stage: Build
+  #   displayName: "Infra Validatation"
+  #   jobs:
+  #     - template: InfradeployTemplates/infravalidation.yml
+  #       parameters:
+  #         environment: "dev"
+  #         serviceconnection: "arm-svc-con"
 
   - stage: Dev
     displayName: "Dev"
