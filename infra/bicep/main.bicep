@@ -26,6 +26,10 @@ var resourceLocator = '${projectName}-${environment}-${location}-${resourceInsta
 //   location: location
 // }
 
+resource resGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing =  {
+  name: 'onlinestore-dev-uksouth-001'
+}
+
 // Deploy vnet with subnets
 module network 'modules/network.bicep' = {
   name: 'NetworkDeploy'
