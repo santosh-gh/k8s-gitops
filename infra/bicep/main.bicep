@@ -1,5 +1,5 @@
 // Parameters
-targetScope = 'resourceGroup'
+targetScope = 'subscription'
 
 @description('Project name')
 param projectName string
@@ -20,15 +20,13 @@ param subnets array = []
 var resourceLocator = '${projectName}-${environment}-${location}-${resourceInstance}'
 
 
-// // Create a resource group
-// resource resGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-//   name: 'rg-${projectName}-${environment}-${resourceInstance}'
-//   location: location
-// }
-
-resource resGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existing =  {
-  name: 'onlinestore-dev-uksouth-001'
+// Create a resource group
+resource resGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: 'rg-${projectName}-${environment}-${resourceInstance}'
+  location: location
 }
+
+
 
 // Deploy vnet with subnets
 module network 'modules/network.bicep' = {
