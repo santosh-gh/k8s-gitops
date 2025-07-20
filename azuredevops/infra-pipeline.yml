@@ -15,7 +15,7 @@ stages:
   - stage: Build
     displayName: "Infra Validatation"
     jobs:
-      - template: InfradeployTemplates/infravalidation.yml
+      - template: InfraDeployTemplates/infravalidation.yml
         parameters:
           environment: "dev"
           serviceconnection: "arm-svc-con"
