@@ -20,8 +20,8 @@ jobs:
                 scriptLocation: 'inlineScript'
                 workingDirectory: $(Pipeline.Workspace)
                 inlineScript: |
-                  $filename = "$(Agent.WorkFolder)/1/s/k8s-gitops/infra/bicep/main.bicep"
-                  $parametersfilename = "$(Agent.WorkFolder)/1/s/k8s-gitops/infra/bicep/main.bicepparam"                 
+                  $filename = "$(Pipeline.Workspace)/InfraPackage/infra/bicep/main.bicep"
+                  $parametersfilename = "$(Pipeline.Workspace)/InfraPackage/infra/bicep/main.bicepparam"                 
                   Write-Host "STARTING DEPLOYMENT......."
                   
                   $validationResult = az deployment sub create --location uksouth --template-file $filename --parameters $parametersfilename

@@ -12,6 +12,38 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
+  - stage: Build
+    displayName: "Build Infra"
+    jobs:
+      steps:
+      - task: AzureCLI@2
+        displayName: "Validate Infra"
+        inputs:
+          azureSubscription: "arm-svc-con"
+          scriptType: 'pscore'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            $filename = "$(System.DefaultWorkingDirectory)/infra/main.bicep"
+            $parametersfilename = "$(System.DefaultWorkingDirectory)/infra/main.bicepparam"
+            
+            $validationResult = az deployment sub validate --location uksouth --template-file $filename --parameters $parametersfilename
+            if($validationResult.Contains("InvalidTemplate"))
+            {
+              throw $validationResult
+            }
+            Write-Output "Successfully validated $filename"
+      - task: CopyFiles@2
+        displayName: Copy Infra Files to Build Artifacts
+        inputs:
+          SourceFolder: "$(System.DefaultWorkingDirectory)/infra"
+          Contents: |
+            /**
+          TargetFolder: "$(Build.ArtifactStagingDirectory)/infra"
+
+      - publish: $(Build.ArtifactStagingDirectory)
+        displayName: Publish Transformed artifacts
+        artifact: InfraPackage
+
   - stage: Dev
     displayName: "Dev"
     jobs:
