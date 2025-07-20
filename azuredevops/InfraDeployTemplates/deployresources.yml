@@ -24,7 +24,7 @@ jobs:
                   $parametersfilename = "$(Pipeline.Workspace)/InfraPackage/infra/bicep/main.bicepparam"                 
                   Write-Host "STARTING DEPLOYMENT......."
                   
-                  $validationResult = az deployment sub create --location uksouth --template-file $filename --parameters $parametersfilename
+                  $validationResult = az deployment sub create --location uksouth --template-file $filename --parameters $parametersfilename -verbose --debug
                   # if($validationResult.Contains("InvalidTemplate"))
                   # {
                   #   throw $validationResult
