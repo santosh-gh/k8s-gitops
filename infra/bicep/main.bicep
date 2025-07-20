@@ -1,5 +1,5 @@
 // Parameters
-targetScope = 'subscription'
+targetScope = 'resourceGroup'
 
 @description('Project name')
 param projectName string
