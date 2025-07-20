@@ -15,8 +15,8 @@ jobs:
           scriptType: 'pscore'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            $filename = "$(System.DefaultWorkingDirectory)/infra/main.bicep"
-            $parametersfilename = "$(System.DefaultWorkingDirectory)/infra/main.bicepparam"
+            $filename = "$(System.DefaultWorkingDirectory)/infra/bicep/main.bicep"
+            $parametersfilename = "$(System.DefaultWorkingDirectory)/infra/bicep/main.bicepparam"
             
             $validationResult = az deployment sub validate --location uksouth --template-file $filename --parameters $parametersfilename --parameters environment=${{parameters.environment}}
             if($validationResult.Contains("InvalidTemplate"))
