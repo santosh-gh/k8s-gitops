@@ -28,14 +28,14 @@ resource resGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 
 
-// Deploy vnet with subnets
-module network 'modules/network.bicep' = {
-  name: 'NetworkDeploy'
-  scope: resourceGroup(resGroup.name)
-  params: {
-    vnetName: 'vnet-${resourceLocator}'
-    location: location
-    vnetAddressPrefix: vnetAddressPrefix
-    subnets: subnets
-  }  
-}
+// // Deploy vnet with subnets
+// module network 'modules/network.bicep' = {
+//   name: 'NetworkDeploy'
+//   scope: resourceGroup(resGroup.name)
+//   params: {
+//     vnetName: 'vnet-${resourceLocator}'
+//     location: location
+//     vnetAddressPrefix: vnetAddressPrefix
+//     subnets: subnets
+//   }  
+// }

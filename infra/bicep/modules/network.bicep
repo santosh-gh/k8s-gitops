@@ -1,5 +1,5 @@
 @description('The resource group location')
-param location string = resourceGroup().location
+param location string
 
 @description('VnetName')
 param vnetName string
