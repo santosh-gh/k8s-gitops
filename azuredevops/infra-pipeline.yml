@@ -18,7 +18,7 @@ stages:
       - template: InfraDeployTemplates/infravalidation.yml
         parameters:
           environment: "dev"
-          serviceconnection: "svc-con"
+          serviceconnection: "arm-svc-con"
 
   - stage: Dev
     displayName: "Dev"
@@ -26,4 +26,4 @@ stages:
       - template: InfraDeployTemplates/deployresources.yml
         parameters:
           environment: "dev"
-          serviceconnection: "svc-con"
+          serviceconnection: "arm-svc-con"
