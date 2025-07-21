@@ -2,7 +2,7 @@ using 'main.bicep'
 
 param projectName =  'onlinestore'
 param environment =  'dev'
-param location = 'centralindia'
+param location = 'uksouth'
 param resourceInstance = '001'
 
 // Network
