@@ -56,7 +56,7 @@ module acr 'modules/acr.bicep' = {
   name: 'ACR-deployment'
   scope: resourceGroup(resGroup.name)
   params: {
-    acrName: 'acr-${projectName}-${environment}-${resourceInstance}'
+    acrName: 'acr${projectName}${environment}${resourceInstance}'
     location: location
   }
 }
