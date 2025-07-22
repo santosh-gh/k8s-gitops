@@ -24,7 +24,7 @@ param linuxAdminUsername string
 @description('agent ssh public key for the cluster.')
 param sshRSAPublicKey string
 
-resource aks 'Microsoft.ContainerService/managedClusters@2022-05-02-preview' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-05-01' = {
   name: aksName
   location: location
   identity: {
