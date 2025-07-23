@@ -33,20 +33,20 @@ stages:
           imageName: 'order'
           dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
           tag: $(tag)
-          jobname: 'BuildOrder'
+          jobName: 'BuildOrder'
 
-      - template: appTemplates/build.yml
-        parameters:
-          acrServiceConnection: 'acr-svc-connection'
-          imageName: 'product'
-          dockerFilePath: '$(Build.sourcesdirectory)/app/product-service/Dockerfile'
-          tag: $(tag)
-          jobname: 'BuildProduct'
+      # - template: appTemplates/build.yml
+      #   parameters:
+      #     acrServiceConnection: 'acr-svc-connection'
+      #     imageName: 'product'
+      #     dockerFilePath: '$(Build.sourcesdirectory)/app/product-service/Dockerfile'
+      #     tag: $(tag)
+      #     jobName: 'BuildProduct'
 
-      - template: appTemplates/build.yml
-        parameters:
-          acrServiceConnection: 'acr-svc-connection'
-          imageName: 'store-front'
-          dockerFilePath: '$(Build.sourcesdirectory)/app/store-front/Dockerfile'
-          tag: $(tag)
-          jobname: 'BuildStoreFront'
+      # - template: appTemplates/build.yml
+      #   parameters:
+      #     acrServiceConnection: 'acr-svc-connection'
+      #     imageName: 'store-front'
+      #     dockerFilePath: '$(Build.sourcesdirectory)/app/store-front/Dockerfile'
+      #     tag: $(tag)
+      #     jobName: 'BuildStoreFront'
