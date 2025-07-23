@@ -5,7 +5,7 @@ variables:
   # ACR name and image info
   azureContainerRepository: acronlinestoredevuksouth001.azurecr.io
   imageName: order
-  imageTag: $(Build.BuildId)
+  tag: $(Build.BuildId)
 
 pool:
   vmImage: ubuntu-latest
@@ -36,8 +36,9 @@ stages:
               containerRegistry: 'acr-svc-connection'
               repository: $(azureContainerRepository)
               Dockerfile: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
-              tags: $(tags)
-
+              tags: |
+                $(tag)
+           
 # steps:
 # - script: |
 #     echo "Listing source directory:"
