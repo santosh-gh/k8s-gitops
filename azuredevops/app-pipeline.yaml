@@ -3,7 +3,7 @@ trigger:
 
 variables:
   # ACR name and image info
-  azureContainerRepository: onlinestoredevuksouth001.azurecr.io
+  azureContainerRepository: acronlinestoredevuksouth001.azurecr.io
   imageName: order
   imageTag: $(Build.BuildId)
 
