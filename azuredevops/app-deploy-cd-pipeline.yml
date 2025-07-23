@@ -5,13 +5,13 @@ stages:
   - stage: PublishArtifact
     displayName: "Publish Pipeline Artifact"
     jobs:
-      job: PublishManifest
-      displayName: "Publish Manifest"
-      steps:
-        - task: PublishPipelineArtifact@1
-          inputs:
-            artifactName: 'manifests'
-            path: 'manifests'
+      - job: PublishManifest
+        displayName: "Publish Manifest"
+        steps:
+          - task: PublishPipelineArtifact@1
+            inputs:
+              artifactName: 'manifests'
+              path: 'manifests'
 
   # - stage: Deploy
   #   displayName: Deploy stage
