@@ -13,8 +13,8 @@ stages:
   - stage: Build
     displayName: Build and publish stage
     jobs:
-      - job: DockerInstall
-        displayName: Docker Install
+      - job: BuildPublishDockerImages
+        displayName: Build Publish Docker Images
         steps:
           - script: |
               echo "Listing source directory:"
@@ -24,6 +24,7 @@ stages:
             displayName: 'List Directories'
 
           - task: DockerInstaller@0
+            displayName: Install Docker
             inputs:
               dockerVersion: '17.09.0-ce'
 
