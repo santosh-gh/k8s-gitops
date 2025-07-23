@@ -1,0 +1,42 @@
+trigger:
+- main
+
+variables:
+  # ACR name and image info
+  acrName: myregistry.azurecr.io
+  imageName: myapp
+  imageTag: $(Build.BuildId)
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: |
+    echo "Listing source directory:"
+    ls -R "$(System.DefaultWorkingDirectory)"
+    echo "Listing build directory:"
+    ls -R "$(Agent.BuildDirectory)"
+  displayName: 'List Directories'
+
+# - task: AzureCLI@2
+#   displayName: 'Build and Push Docker Image'
+#   inputs:
+#     azureSubscription: 'My Azure Connection Name'  # service connection name
+#     scriptType: 'bash'
+#     scriptLocation: 'inlineScript'
+#     inlineScript: |
+#       echo "Logging into ACR..."
+#       az acr login --name $(acrName)
+
+#       echo "Building Docker image..."
+#       docker build -t $(acrName)/$(imageName):$(imageTag) .   
+
+#       echo "Tagging 'latest' version..."
+#       docker tag $(acrName)/$(imageName):$(imageTag) $(acrName)/$(imageName):latest
+#       docker push $(acrName)/$(imageName):latest
+  
+
+
+
+# echo "Pushing Docker image to ACR..."
+# docker push $(acrName)/$(imageName):$(imageTag)
