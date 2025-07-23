@@ -16,8 +16,9 @@ jobs:
         displayName: Build and publish image to ACR
         inputs:
           command: buildAndPush
-          containerRegistry: $(acrServiceConnection)
-          repository: $(imageName)
-          Dockerfile: $(dockerFilePath)
+          containerRegistry: ${{parameters.acrServiceConnection}}
+          repository: ${{parameters.imageName}}
+          Dockerfile: ${{parameters.dockerFilePath}}
           tags: |
-            $(tag)
+            ${{parameters.tag}}
+
