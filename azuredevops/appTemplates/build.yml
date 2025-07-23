@@ -7,9 +7,6 @@ parameters:
   type: string
 - name: "tag"
   type: string
-- name: "jobName"
-  type: string
-
 
 steps:      
   - task: Docker@2
@@ -21,4 +18,3 @@ steps:
       Dockerfile: ${{parameters.dockerFilePath}}
       tags: |
         ${{parameters.tag}}
-
