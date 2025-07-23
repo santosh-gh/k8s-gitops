@@ -27,13 +27,13 @@ stages:
             inputs:
               dockerVersion: '17.09.0-ce'
 
-      - template: appTemplates/build.yml
-        parameters:
-          acrServiceConnection: 'acr-svc-connection'
-          imageName: 'order'
-          dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
-          tag: $(tag)
-          jobName: 'BuildOrder'
+          - template: appTemplates/build.yml
+            parameters:
+              acrServiceConnection: 'acr-svc-connection'
+              imageName: 'order'
+              dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
+              tag: $(tag)
+              jobName: 'BuildOrder'
 
       # - template: appTemplates/build.yml
       #   parameters:
