@@ -7,8 +7,11 @@ parameters:
   type: string
 - name: "tag"
   type: string
+- name: "jobName"
+  type: string
 
-job:
+jobs:
+- job: ${{ parameters.jobName }}
   steps:      
     - task: Docker@2
       displayName: Build and publish ${{parameters.imageName}} to ACR

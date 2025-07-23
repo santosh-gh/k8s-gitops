@@ -33,6 +33,7 @@ stages:
           imageName: 'order'
           dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
           tag: $(tag)
+          jobname: 'Build Order'
 
       - template: appTemplates/build.yml
         parameters:
@@ -40,6 +41,7 @@ stages:
           imageName: 'product'
           dockerFilePath: '$(Build.sourcesdirectory)/app/product-service/Dockerfile'
           tag: $(tag)
+          jobname: 'Build Product'
 
       - template: appTemplates/build.yml
         parameters:
@@ -47,3 +49,4 @@ stages:
           imageName: 'store-front'
           dockerFilePath: '$(Build.sourcesdirectory)/app/store-front/Dockerfile'
           tag: $(tag)
+          jobname: 'Build Store-Front'
