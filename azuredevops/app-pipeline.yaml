@@ -33,7 +33,7 @@ stages:
             displayName: Build and publish image to Azure Container Registry
             inputs:
               command: buildAndPush
-              containerRegistry: 'arm-svc-con'
+              containerRegistry: 'acr-svc-connection'
               repository: $(azureContainerRepository)
               Dockerfile: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
               tags: $(tags)
