@@ -10,7 +10,7 @@ parameters:
 
 jobs:
   - job: Build
-    displayName: Build ${{parameters.imageName}}
+    displayName: Build Job
     steps:      
       - task: Docker@2
         displayName: Build and publish ${{parameters.imageName}} to ACR
