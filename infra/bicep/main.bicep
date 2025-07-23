@@ -48,7 +48,7 @@ var acrPullRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/ro
 
 // Create a resource group
 resource resGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'rg-${projectName}-${environment}-${resourceInstance}'
+  name: 'rg-${resourceLocator}'
   location: location
 }
 
@@ -56,35 +56,35 @@ module acr 'modules/acr.bicep' = {
   name: 'ACR-deployment'
   scope: resourceGroup(resGroup.name)
   params: {
-    acrName: 'acr${projectName}${environment}${resourceInstance}'
+    acrName: 'acr${projectName}${environment}${location}${resourceInstance}'
     location: location
   }
 }
 
-module aks 'modules/aks.bicep' = {
-  name: 'AKS-Deployment'
-  scope: resourceGroup(resGroup.name)
-  params: {
-    aksName: 'aks-${projectName}-${environment}-${resourceInstance}'
-    location: location
-    agentCount: agentCount
-    agentVMSize: agentVMSize
-    linuxAdminUsername: linuxAdminUsername
-    sshRSAPublicKey: sshRSAPublicKey
-    dnsPrefix: dnsPrefix
-    osDiskSizeGB: osDiskSizeGB
-  }
-}
+// module aks 'modules/aks.bicep' = {
+//   name: 'AKS-Deployment'
+//   scope: resourceGroup(resGroup.name)
+//   params: {
+//     aksName: 'aks-${resourceLocator}'
+//     location: location
+//     agentCount: agentCount
+//     agentVMSize: agentVMSize
+//     linuxAdminUsername: linuxAdminUsername
+//     sshRSAPublicKey: sshRSAPublicKey
+//     dnsPrefix: dnsPrefix
+//     osDiskSizeGB: osDiskSizeGB
+//   }
+// }
 
-module roleAssignments 'modules/roleassignments.bicep' = {
-  name: 'RoleAssignments-Deployment'
-  scope: resourceGroup(resGroup.name)
-  params: {
-    aksId: aks.outputs.aksId
-    principalId: aks.outputs.principalId // Principal ID of the AKS cluster
-    acrPullRoleDefinitionId: acrPullRoleDefinitionId    
-  }
-}
+// module roleAssignments 'modules/roleassignments.bicep' = {
+//   name: 'RoleAssignments-Deployment'
+//   scope: resourceGroup(resGroup.name)
+//   params: {
+//     aksId: aks.outputs.aksId
+//     principalId: aks.outputs.principalId // Principal ID of the AKS cluster
+//     acrPullRoleDefinitionId: acrPullRoleDefinitionId    
+//   }
+// }
 
 // // Deploy vnet with subnets
 // module network 'modules/network.bicep' = {
