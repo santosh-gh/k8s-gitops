@@ -3,7 +3,7 @@ trigger:
 
 variables:
   # Image info
-  imageName: order
+  imageName: store-front
   tag: $(Build.BuildId)
 
 pool:
@@ -31,20 +31,6 @@ stages:
           - template: appTemplates/build.yml
             parameters:
               acrServiceConnection: 'acr-svc-connection'
-              imageName: 'order'
-              dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
-              tag: $(tag)
-
-          - template: appTemplates/build.yml
-            parameters:
-              acrServiceConnection: 'acr-svc-connection'
-              imageName: 'product'
-              dockerFilePath: '$(Build.sourcesdirectory)/app/product-service/Dockerfile'
-              tag: $(tag)
-
-          - template: appTemplates/build.yml
-            parameters:
-              acrServiceConnection: 'acr-svc-connection'
-              imageName: 'store-front'
+              imageName: $(imageName)
               dockerFilePath: '$(Build.sourcesdirectory)/app/store-front/Dockerfile'
               tag: $(tag)
