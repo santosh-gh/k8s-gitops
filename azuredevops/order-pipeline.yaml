@@ -4,7 +4,8 @@ trigger:
 variables:
   # Image info
   imageName: order
-  tag: $(Build.BuildId)
+  #tag: $(Build.BuildId)
+  tag: latest
 
 pool:
   vmImage: ubuntu-latest
@@ -16,12 +17,12 @@ stages:
       - job: BuildPublishDockerImages
         displayName: Build Publish Docker Images
         steps:
-          - script: |
-              echo "Listing source directory:"
-              ls -R "$(System.DefaultWorkingDirectory)"
-              echo "Listing build directory:"
-              ls -R "$(Agent.BuildDirectory)"
-            displayName: 'List Directories'
+          # - script: |
+          #     echo "Listing source directory:"
+          #     ls -R "$(System.DefaultWorkingDirectory)"
+          #     echo "Listing build directory:"
+          #     ls -R "$(Agent.BuildDirectory)"
+          #   displayName: 'List Directories'
 
           - task: DockerInstaller@0
             displayName: Install Docker
