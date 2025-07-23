@@ -10,10 +10,10 @@ parameters:
 
 jobs:
   - job: Build
-    displayName: Build Job
+    displayName: Build ${{parameters.imageName}}
     steps:      
       - task: Docker@2
-        displayName: Build and publish image to ACR
+        displayName: Build and publish ${{parameters.imageName}} to ACR
         inputs:
           command: buildAndPush
           containerRegistry: ${{parameters.acrServiceConnection}}
