@@ -13,8 +13,8 @@ stages:
   - stage: Build
     displayName: Build and publish stage
     jobs:
-      - job: Build
-        displayName: Build Job
+      - job: DockerInstall
+        displayName: Docker Install
         steps:
           - script: |
               echo "Listing source directory:"
@@ -26,13 +26,24 @@ stages:
           - task: DockerInstaller@0
             inputs:
               dockerVersion: '17.09.0-ce'
+
+      - template: appTemplates/build.yml
+        parameters:
+          acrServiceConnection: 'acr-svc-connection'
+          imageName: $(imageName)
+          dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
+          tag: $(tag)
           
-          - task: Docker@2
-            displayName: Build and publish image to ACR
-            inputs:
-              command: buildAndPush
-              containerRegistry: 'acr-svc-connection'
-              repository: $(imageName)
-              Dockerfile: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
-              tags: |
-                $(tag)
+          # - task: Docker@2
+          #   displayName: Build and publish image to ACR
+          #   inputs:
+          #     command: buildAndPush
+          #     containerRegistry: 'acr-svc-connection'
+          #     repository: $(imageName)
+          #     Dockerfile: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
+          #     tags: |
+          #       $(tag)
+
+          #       '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
+
+          #       acrServiceConnection
