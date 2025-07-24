@@ -55,7 +55,7 @@ stages:
           action: deploy
           kubernetesServiceConnection: 'aks-svc-connection'
           namespace: $(namespace)
-          manifests: $(manifestsPath)
+          manifests: $(Build.sourcesdirectory)/manifests/
 
   # - stage: Deploy
   #   displayName: Deploy stage
