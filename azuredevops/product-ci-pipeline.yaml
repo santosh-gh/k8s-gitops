@@ -1,6 +1,11 @@
 trigger: none
 
 variables:
+  serviceConnection: 'arm-svc-con'
+  aksCluster: 'aks-onlinestore-dev-uksouth-001'
+  aksResourceGroup: 'rg-onlinestore-dev-uksouth-001'
+  namespace: 'default' # or custom namespace
+  manifestsPath: 'manifests/' # folder where your YAML files are
   # Image info
   imageName: product
   #tag: $(Build.BuildId)
