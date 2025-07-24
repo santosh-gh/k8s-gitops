@@ -38,12 +38,24 @@ stages:
       #       az account set --subscription 'b798c28b-e334-4ecf-b338-ec314ced3616'
       #       az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster) --overwrite-existing
 
-      - task: KubernetesManifest@1
-        displayName: Deploy Order Service
+      - task: Kubernetes@1
+        displayName: 'kubectl apply'
         inputs:
-          action: 'deploy'
-          connectionType: 'azureResourceManager'
-          azureSubscriptionConnection: $(serviceConnection)
-          azureResourceGroup: $(aksResourceGroup)
-          kubernetesCluster: $(aksCluster)
-          manifests: $(Build.sourcesdirectory)/manifests/
+          connectionType: 'Kubernetes Service Connection'
+          kubernetesServiceEndpoint: 'aks-svc-connection'
+          namespace: $(namespace)
+          command: apply
+          arguments: '-f ./manifests'
+          # or, if using a single manifest file
+          # arguments: '-f ./manifests/all-in-one.yaml'
+
+      # - task: KubernetesManifest@1
+      #   displayName: Deploy Order Service
+      #   inputs:
+      #     action: 'deploy'
+      #     connectionType: 'azureResourceManager'
+      #     azureSubscriptionConnection: $(serviceConnection)
+      #     azureResourceGroup: $(aksResourceGroup)
+      #     kubernetesCluster: $(aksCluster)
+      #     manifests: |
+      #       $(Build.sourcesdirectory)/manifests/
