@@ -28,15 +28,15 @@ stages:
       pool:
         vmImage: ubuntu-latest
       steps:
-      # - task: AzureCLI@2
-      #   displayName: 'Azure CLI: Connect to AKS'
-      #   inputs:
-      #     azureSubscription: $(serviceConnection)
-      #     scriptType: 'bash'
-      #     scriptLocation: 'inlineScript'
-      #     inlineScript: |
-      #       az account set --subscription 'b798c28b-e334-4ecf-b338-ec314ced3616'
-      #       az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster) --overwrite-existing
+      - task: AzureCLI@2
+        displayName: 'Azure CLI: Connect to AKS'
+        inputs:
+          azureSubscription: $(serviceConnection)
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az account set --subscription 'b798c28b-e334-4ecf-b338-ec314ced3616'
+            az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster) --overwrite-existing
 
       - task: Kubernetes@1
         displayName: 'kubectl apply'
