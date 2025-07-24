@@ -21,7 +21,6 @@ stages:
       displayName: Deploy job
       pool:
         vmImage: 'ubuntu-latest'
-      environment: 'myenv.aksnamespace' #customize with your environment
       strategy:
         runOnce:
           deploy:
