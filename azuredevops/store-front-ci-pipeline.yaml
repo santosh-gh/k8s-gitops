@@ -27,3 +27,20 @@ stages:
               imageName: $(imageName)
               dockerFilePath: '$(Build.sourcesdirectory)/app/store-front/Dockerfile'
               tag: $(tag)
+  
+  - stage: Deploy
+    displayName: Deploy store-front Service in AKS
+    jobs:     
+      - job: DeplyUsingManifest
+        steps:       
+          - task: KubernetesManifest@1
+            displayName: Deploy store-front Service
+            inputs:
+              action: 'deploy'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: $(serviceConnection)
+              azureResourceGroup: $(aksResourceGroup)
+              kubernetesCluster: $(aksCluster)
+              manifests: |
+                $(Build.sourcesdirectory)/manifests/store-front-deployment.yml
+                $(Build.sourcesdirectory)/manifests/store-front-service.yml

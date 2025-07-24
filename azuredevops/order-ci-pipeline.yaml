@@ -40,12 +40,12 @@ stages:
               tag: $(tag)
 
   - stage: Deploy
-    displayName: Deploy Order Service in AKS
+    displayName: Deploy order service in AKS
     jobs:     
       - job: DeplyUsingManifest
         steps:       
           - task: KubernetesManifest@1
-            displayName: Deploy Order Service
+            displayName: Deploy order service
             inputs:
               action: 'deploy'
               connectionType: 'azureResourceManager'
