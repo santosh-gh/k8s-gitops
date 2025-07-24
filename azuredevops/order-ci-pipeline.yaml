@@ -1,7 +1,11 @@
 trigger: none
 
 variables:
-  # Image info
+  serviceConnection: 'arm-svc-con'
+  aksCluster: 'aks-onlinestore-dev-uksouth-001'
+  aksResourceGroup: 'rg-onlinestore-dev-uksouth-001'
+  namespace: 'default' # or custom namespace
+  manifestsPath: 'manifests/' # folder where your YAML files are
   imageName: order
   #tag: $(Build.BuildId)
   tag: latest
@@ -34,3 +38,20 @@ stages:
               imageName: $(imageName)
               dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
               tag: $(tag)
+
+  - stage: Deploy
+    displayName: Deploy Order Service in AKS
+    jobs:     
+      - job: DeplyUsingManifest
+        steps:       
+          - task: KubernetesManifest@1
+            displayName: Deploy Order Service
+            inputs:
+              action: 'deploy'
+              connectionType: 'azureResourceManager'
+              azureSubscriptionConnection: $(serviceConnection)
+              azureResourceGroup: $(aksResourceGroup)
+              kubernetesCluster: $(aksCluster)
+              manifests: |
+                $(build.sourcesdirectory)/manifests/order-deployment.yml
+                $(build.sourcesdirectory)/manifests/order-service.yml
