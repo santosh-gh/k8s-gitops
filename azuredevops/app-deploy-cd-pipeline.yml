@@ -38,6 +38,6 @@ stages:
           kubernetesServiceEndpoint: 'aks-svc-connection'
           namespace: 'default'
           command: apply
-          arguments: '-f ./manifests'
+          arguments: '-f ./manifests --validate=false'
           # or, if using a single manifest file
           # arguments: '-f ./manifests/all-in-one.yaml'
