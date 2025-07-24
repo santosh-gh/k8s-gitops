@@ -55,3 +55,6 @@ stages:
               manifests: |
                 $(Build.sourcesdirectory)/manifests/order-deployment.yml
                 $(Build.sourcesdirectory)/manifests/order-service.yml
+                $(Build.sourcesdirectory)/manifests/configmap.yml                
+                $(Build.sourcesdirectory)/manifests/rabbitmq-statefulset.yml                
+                $(Build.sourcesdirectory)/manifests/rabbitmq-service.yml
