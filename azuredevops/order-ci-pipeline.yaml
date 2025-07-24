@@ -53,5 +53,5 @@ stages:
               azureResourceGroup: $(aksResourceGroup)
               kubernetesCluster: $(aksCluster)
               manifests: |
-                $(Build.sourcesdirectory)/manifests/order-deployment.yml
-                $(Build.sourcesdirectory)/manifests/order-service.yml
+                order-deployment.yml
+                order-service.yml
