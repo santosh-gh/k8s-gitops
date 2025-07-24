@@ -28,76 +28,22 @@ stages:
       pool:
         vmImage: ubuntu-latest
       steps:
-      - task: AzureCLI@2
-        displayName: 'Azure CLI: Connect to AKS'
-        inputs:
-          azureSubscription: $(serviceConnection)
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            az account set --subscription 'b798c28b-e334-4ecf-b338-ec314ced3616'
-            az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster) --overwrite-existing
-
-      # - task: Kubernetes@1
-      #   displayName: 'kubectl apply'
+      # - task: AzureCLI@2
+      #   displayName: 'Azure CLI: Connect to AKS'
       #   inputs:
-      #     connectionType: 'Kubernetes Service Connection'
-      #     kubernetesServiceEndpoint: 'aks-svc-connection'
-      #     namespace: $(namespace)
-      #     command: apply
-      #     arguments: '-f ./manifests'
-      #     # or, if using a single manifest file
-      #     # arguments: '-f ./manifests/all-in-one.yaml'
+      #     azureSubscription: $(serviceConnection)
+      #     scriptType: 'bash'
+      #     scriptLocation: 'inlineScript'
+      #     inlineScript: |
+      #       az account set --subscription 'b798c28b-e334-4ecf-b338-ec314ced3616'
+      #       az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster) --overwrite-existing
 
       - task: KubernetesManifest@1
-        displayName: Deploy manifests to AKS
+        displayName: Deploy Order Service
         inputs:
-          action: deploy
-          kubernetesServiceConnection: 'aks-svc-connection'
-          namespace: $(namespace)
+          action: 'deploy'
+          connectionType: 'azureResourceManager'
+          azureSubscriptionConnection: $(serviceConnection)
+          azureResourceGroup: $(aksResourceGroup)
+          kubernetesCluster: $(aksCluster)
           manifests: $(Build.sourcesdirectory)/manifests/
-
-  # - stage: Deploy
-  #   displayName: Deploy stage
-  #   dependsOn: PublishArtifact
-  #   jobs:
-  #   - deployment: Deploy
-  #     displayName: Deploy job
-  #     pool:
-  #       vmImage: 'ubuntu-latest'
-  #     environment: 'dev' #customize with your environment
-  #     strategy:
-  #       runOnce:
-  #         deploy:
-  #           steps:
-  #           - task: DownloadPipelineArtifact@2
-  #             inputs:
-  #               artifactName: 'manifests'
-  #               downloadPath: '$(System.ArtifactsDirectory)/manifests'
-
-  #           - script: |
-  #               echo "Listing source directory:"
-  #               ls -R "$(System.DefaultWorkingDirectory)"
-  #               echo "Listing build directory:"
-  #               ls -R "$(Agent.BuildDirectory)"
-  #             displayName: 'List Directories'        
-            
-
-  #           # - task: KubernetesManifest@1
-  #           #   displayName: Create imagePullSecret
-  #           #   inputs:
-  #           #     action: 'createSecret'
-  #           #     connectionType: 'kubernetesServiceConnection'
-  #           #     kubernetesServiceConnection: 'myapp-default' #customize for your Kubernetes service connection
-  #           #     secretType: 'dockerRegistry'
-  #           #     secretName: '$(imagePullSecret)'
-  #           #     dockerRegistryEndpoint: '$(dockerRegistryServiceConnection)'
-
-  #           - task: KubernetesManifest@1
-  #             displayName: Deploy to Kubernetes cluster
-  #             inputs:
-  #               action: 'deploy'
-  #               connectionType: 'kubernetesServiceConnection'
-  #               kubernetesServiceConnection: 'aks-svc-connection'
-  #               manifests: |
-  #                 $(Pipeline.Workspace)/manifests/
