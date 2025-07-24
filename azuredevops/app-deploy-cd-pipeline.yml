@@ -35,7 +35,7 @@ stages:
         displayName: 'kubectl apply'
         inputs:
           connectionType: 'Kubernetes Service Connection'
-          kubernetesServiceConnection: 'aks-svc-connection'
+          kubernetesServiceEndpoint: 'aks-svc-connection'
           namespace: 'default'
           command: apply
           arguments: '-f ./manifests'
