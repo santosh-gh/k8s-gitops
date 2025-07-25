@@ -59,9 +59,9 @@ stages:
           # Task 2 publish build artifacts
           - task: PublishBuildArtifacts@1
             inputs:
-            PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests'
-            ArtifactName: 'kube-manifests'
-            publishLocation: 'Container'
+              PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests'
+              ArtifactName: 'kube-manifests'
+              publishLocation: 'Container'
 
   # - stage: Deploy
   #   displayName: Deploy order service in AKS
