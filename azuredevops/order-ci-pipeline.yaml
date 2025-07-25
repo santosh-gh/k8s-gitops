@@ -87,8 +87,7 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                artifactName: 'kube-manifests'
-                itemPattern: '*.yml'
+                artifactName: 'kube-manifests' 
                 targetPath: '$(System.ArtifactsDirectory)'
 
             - script: |
