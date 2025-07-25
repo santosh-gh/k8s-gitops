@@ -42,11 +42,7 @@ stages:
                 buildType: 'current'                
                 artifactName: 'rabbitmq-manifests' 
                 targetPath: '$(System.ArtifactsDirectory)/manifests/rabbitmq'
-
-            - script: |
-                echo "Listing ArtifactsDirectory:"
-                ls -R "$(System.ArtifactsDirectory)"
-            
+           
             - template: appTemplates/deploy.yml
               parameters:
                 serviceConnection: $(serviceConnection)
@@ -54,3 +50,4 @@ stages:
                 manifestPath: $(System.ArtifactsDirectory)/manifests/rabbitmq
                 aksResourceGroup: $(aksResourceGroup)                
                 aksCluster: $(aksCluster)
+                namespace: $(namespace)

@@ -41,10 +41,6 @@ stages:
                 buildType: current               
                 artifactName: config-manifests
                 targetPath: $(System.ArtifactsDirectory)/manifests/config
-
-            - script: |
-                echo "Listing ArtifactsDirectory:"
-                ls -R "$(System.ArtifactsDirectory)"
             
             - template: appTemplates/deploy.yml
               parameters:

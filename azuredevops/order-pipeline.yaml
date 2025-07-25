@@ -4,8 +4,7 @@ variables:
   serviceConnection: 'arm-svc-con'
   aksCluster: 'aks-onlinestore-dev-uksouth-001'
   aksResourceGroup: 'rg-onlinestore-dev-uksouth-001'
-  namespace: 'default' # or custom namespace
-  manifestsPath: 'manifests/' # folder where your YAML files are
+  namespace: 'default'
   imageName: 'order'
   #tag: $(Build.BuildId)
   tag: latest
@@ -70,6 +69,7 @@ stages:
                 manifestPath: $(System.ArtifactsDirectory)/manifests/order
                 aksResourceGroup: $(aksResourceGroup)                
                 aksCluster: $(aksCluster)
+                namespace: $(namespace)
 
             # - task: AzureCLI@2
             #   displayName: 'Deploy to AKS with --validate=false'

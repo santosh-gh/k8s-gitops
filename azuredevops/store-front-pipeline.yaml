@@ -56,10 +56,6 @@ stages:
                 buildType: 'current'                
                 artifactName: 'store-front-manifests' 
                 targetPath: '$(System.ArtifactsDirectory)/manifests/store-front'
-
-            - script: |
-                echo "Listing ArtifactsDirectory:"
-                ls -R "$(System.ArtifactsDirectory)"
             
             - template: appTemplates/deploy.yml
               parameters:
@@ -68,3 +64,4 @@ stages:
                 manifestPath: $(System.ArtifactsDirectory)/manifests/store-front
                 aksResourceGroup: $(aksResourceGroup)                
                 aksCluster: $(aksCluster)
+                namespace: $(namespace)
