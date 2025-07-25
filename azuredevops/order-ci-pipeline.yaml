@@ -6,7 +6,7 @@ variables:
   aksResourceGroup: 'rg-onlinestore-dev-uksouth-001'
   namespace: 'default' # or custom namespace
   manifestsPath: 'manifests/' # folder where your YAML files are
-  imageName: order
+  imageName: 'order'
   #tag: $(Build.BuildId)
   tag: latest
 
@@ -30,37 +30,13 @@ stages:
               acrServiceConnection: 'acr-svc-connection'
               imageName: $(imageName)
               dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
-              tag: $(tag)
-
-          # - task: CopyFiles@2
-          #   inputs:
-          #     SourceFolder: '$(System.DefaultWorkingDirectory)/manifests'
-          #     Contents: '*.yml'
-          #     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-          # - task: PublishBuildArtifacts@1
-          #   inputs:
-          #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          #     ArtifactName: 'appdeployment'
-          #     publishLocation: 'Container'
-
-          # - script: |
-          #     echo "Listing source directory:"
-          #     ls -R "$(System.DefaultWorkingDirectory)"
-
-          #     echo "Listing Artifact Staging Directory:"
-          #     ls -R "$(Build.ArtifactStagingDirectory)"
-
-          #     echo "Listing build directory:"
-          #     ls -R "$(Agent.BuildDirectory)"
-              
-          #   displayName: 'List Directories'
+              tag: $(tag)       
 
           # Task 2 publish build artifacts
           - task: PublishBuildArtifacts@1
             inputs:
-              PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests'
-              ArtifactName: 'kube-manifests'
+              PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests/order'
+              ArtifactName: 'order-manifests'
               publishLocation: 'Container'
 
   - stage: Deploy
@@ -77,32 +53,33 @@ stages:
         runOnce:
           deploy:
             steps:
-            # - task: KubernetesManifest@0
-            #   displayName: Create imagePullSecret
-            #   inputs:
-            #     action: createSecret
-            #     secretName: $(imagePullSecret)
-            #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'                
-                artifactName: 'kube-manifests' 
-                targetPath: '$(System.ArtifactsDirectory)/manifests'
+                artifactName: 'order-manifests' 
+                targetPath: '$(System.ArtifactsDirectory)/manifests/order'
 
             - script: |
                 echo "Listing ArtifactsDirectory:"
                 ls -R "$(System.ArtifactsDirectory)"
+            
+            - template: appTemplates/deploy.yml
+              parameters:
+                serviceConnection: $(serviceConnection)
+                aksObject: 'order'
+                manifestPath: $(System.ArtifactsDirectory)/manifests/order
+                aksResourceGroup: $(aksResourceGroup)                
+                aksCluster: $(aksCluster)
 
-            - task: AzureCLI@2
-              displayName: 'Deploy to AKS with --validate=false'
-              inputs:
-                azureSubscription: $(serviceConnection)
-                scriptType: 'bash'
-                scriptLocation: 'inlineScript'
-                inlineScript: |
-                  az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster)
-                  kubectl apply -f $(System.ArtifactsDirectory)/manifests/ --validate=false
+            # - task: AzureCLI@2
+            #   displayName: 'Deploy to AKS with --validate=false'
+            #   inputs:
+            #     azureSubscription: $(serviceConnection)
+            #     scriptType: 'bash'
+            #     scriptLocation: 'inlineScript'
+            #     inlineScript: |
+            #       az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster)
+            #       kubectl apply -f $(System.ArtifactsDirectory)/manifests/ --validate=false
 
             # - task: KubernetesManifest@1
             #   displayName: Deploy to Kubernetes cluster

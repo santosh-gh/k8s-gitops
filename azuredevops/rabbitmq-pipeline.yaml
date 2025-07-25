@@ -4,10 +4,7 @@ variables:
   serviceConnection: 'arm-svc-con'
   aksCluster: 'aks-onlinestore-dev-uksouth-001'
   aksResourceGroup: 'rg-onlinestore-dev-uksouth-001'
-  namespace: 'default' # or custom namespace
-  manifestsPath: 'manifests/' # folder where your YAML files are
-  imageName: 'product'
-  #tag: $(Build.BuildId)
+  namespace: 'default'
   tag: latest
 
 pool:
@@ -20,25 +17,12 @@ stages:
       - job: BuildPublishDockerImages
         displayName: Build Publish Docker Images
         steps:
-          - task: DockerInstaller@0
-            displayName: Install Docker
-            inputs:
-              dockerVersion: '17.09.0-ce'
-
-          - template: appTemplates/build.yml
-            parameters:
-              acrServiceConnection: 'acr-svc-connection'
-              imageName: $(imageName)
-              dockerFilePath: '$(Build.sourcesdirectory)/app/product-service/Dockerfile'
-              tag: $(tag)
-          
-          # Task 2 publish build artifacts
           - task: PublishBuildArtifacts@1
             inputs:
-              PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests//product'
-              ArtifactName: 'product-manifests'
+              PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests/rabbitmq'
+              ArtifactName: 'rabbitmq-manifests'
               publishLocation: 'Container'
-
+  
   - stage: Deploy
     displayName: Deploy stage
     dependsOn: Build
@@ -56,8 +40,8 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'                
-                artifactName: 'product-manifests' 
-                targetPath: '$(System.ArtifactsDirectory)/manifests/product'
+                artifactName: 'rabbitmq-manifests' 
+                targetPath: '$(System.ArtifactsDirectory)/manifests/rabbitmq'
 
             - script: |
                 echo "Listing ArtifactsDirectory:"
@@ -66,7 +50,7 @@ stages:
             - template: appTemplates/deploy.yml
               parameters:
                 serviceConnection: $(serviceConnection)
-                aksObject: 'product'
-                manifestPath: $(System.ArtifactsDirectory)/manifests/product
+                aksObject: 'rabbitmq'
+                manifestPath: $(System.ArtifactsDirectory)/manifests/rabbitmq
                 aksResourceGroup: $(aksResourceGroup)                
                 aksCluster: $(aksCluster)

@@ -4,11 +4,8 @@ variables:
   serviceConnection: 'arm-svc-con'
   aksCluster: 'aks-onlinestore-dev-uksouth-001'
   aksResourceGroup: 'rg-onlinestore-dev-uksouth-001'
-  namespace: 'default' # or custom namespace
-  manifestsPath: 'manifests/' # folder where your YAML files are
-  # Image info
-  imageName: store-front
-  #tag: $(Build.BuildId)
+  namespace: 'default'
+  imageName: 'store-front'
   tag: latest
 
 pool:
@@ -32,20 +29,42 @@ stages:
               imageName: $(imageName)
               dockerFilePath: '$(Build.sourcesdirectory)/app/store-front/Dockerfile'
               tag: $(tag)
+
+          # Task 2 publish build artifacts
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests/store-front'
+              ArtifactName: 'store-front-manifests'
+              publishLocation: 'Container'
   
-  # - stage: Deploy
-  #   displayName: Deploy store-front Service in AKS
-  #   jobs:     
-  #     - job: DeplyUsingManifest
-  #       steps:       
-  #         - task: KubernetesManifest@1
-  #           displayName: Deploy store-front Service
-  #           inputs:
-  #             action: 'deploy'
-  #             connectionType: 'azureResourceManager'
-  #             azureSubscriptionConnection: $(serviceConnection)
-  #             azureResourceGroup: $(aksResourceGroup)
-  #             kubernetesCluster: $(aksCluster)
-  #             manifests: |
-  #               $(Build.sourcesdirectory)/manifests/store-front-deployment.yml
-  #               $(Build.sourcesdirectory)/manifests/store-front-service.yml
+  - stage: Deploy
+    displayName: Deploy stage
+    dependsOn: Build
+
+    jobs:
+    - deployment: Deploy
+      displayName: Deploy
+      pool:
+        vmImage: ubuntu-latest
+      environment: 'Dev'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'                
+                artifactName: 'store-front-manifests' 
+                targetPath: '$(System.ArtifactsDirectory)/manifests/store-front'
+
+            - script: |
+                echo "Listing ArtifactsDirectory:"
+                ls -R "$(System.ArtifactsDirectory)"
+            
+            - template: appTemplates/deploy.yml
+              parameters:
+                serviceConnection: $(serviceConnection)
+                aksObject: 'store-front'
+                manifestPath: $(System.ArtifactsDirectory)/manifests/store-front
+                aksResourceGroup: $(aksResourceGroup)                
+                aksCluster: $(aksCluster)
