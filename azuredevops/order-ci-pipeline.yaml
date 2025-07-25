@@ -20,41 +20,98 @@ stages:
       - job: BuildPublishDockerImages
         displayName: Build Publish Docker Images
         steps:
-          # - script: |
-          #     echo "Listing source directory:"
-          #     ls -R "$(System.DefaultWorkingDirectory)"
-          #     echo "Listing build directory:"
-          #     ls -R "$(Agent.BuildDirectory)"
-          #   displayName: 'List Directories'
-
           - task: DockerInstaller@0
             displayName: Install Docker
             inputs:
               dockerVersion: '17.09.0-ce'
 
-          - template: appTemplates/build.yml
-            parameters:
-              acrServiceConnection: 'acr-svc-connection'
-              imageName: $(imageName)
-              dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
-              tag: $(tag)
+          # - template: appTemplates/build.yml
+          #   parameters:
+          #     acrServiceConnection: 'acr-svc-connection'
+          #     imageName: $(imageName)
+          #     dockerFilePath: '$(Build.sourcesdirectory)/app/order-service/Dockerfile'
+          #     tag: $(tag)
 
-  - stage: Deploy
-    displayName: Deploy order service in AKS
-    jobs:     
-      - job: DeplyUsingManifest
-        steps:       
-          - task: KubernetesManifest@1
-            displayName: Deploy order service
+          - task: CopyFiles@2
             inputs:
-              action: 'deploy'
-              connectionType: 'azureResourceManager'
-              azureSubscriptionConnection: $(serviceConnection)
-              azureResourceGroup: $(aksResourceGroup)
-              kubernetesCluster: $(aksCluster)
-              manifests: |
-                $(Build.sourcesdirectory)/manifests/order-deployment.yml
-                $(Build.sourcesdirectory)/manifests/order-service.yml
-                $(Build.sourcesdirectory)/manifests/configmap.yml                
-                $(Build.sourcesdirectory)/manifests/rabbitmq-statefulset.yml                
-                $(Build.sourcesdirectory)/manifests/rabbitmq-service.yml
+              SourceFolder: '$(System.DefaultWorkingDirectory)/manifests'
+              Contents: '*.yaml'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'appdeployment'
+              publishLocation: 'Container'
+
+          - script: |
+              echo "Listing source directory:"
+              ls -R "$(System.DefaultWorkingDirectory)"
+
+              echo "Listing Artifact Staging Directory:"
+              ls -R "$(Build.ArtifactStagingDirectory)"
+
+              echo "Listing build directory:"
+              ls -R "$(Agent.BuildDirectory)"
+              
+            displayName: 'List Directories'
+
+          # Task 2 publish build artifacts
+          - task: PublishBuildArtifacts@1
+            inputs:
+            PathtoPublish: '$(System.DefaultWorkingDirectory)/manifests'
+            ArtifactName: 'kube-manifests'
+            publishLocation: 'Container'
+
+  # - stage: Deploy
+  #   displayName: Deploy order service in AKS
+  #   jobs:     
+  #     - job: DeplyUsingManifest
+  #       steps:       
+  #         - task: KubernetesManifest@1
+  #           displayName: Deploy order service
+  #           inputs:
+  #             action: 'deploy'
+  #             connectionType: 'azureResourceManager'
+  #             azureSubscriptionConnection: $(serviceConnection)
+  #             azureResourceGroup: $(aksResourceGroup)
+  #             kubernetesCluster: $(aksCluster)
+  #             manifests: |
+  #               $(Build.sourcesdirectory)/manifests/order-deployment.yml
+  #               $(Build.sourcesdirectory)/manifests/order-service.yml
+  #               $(Build.sourcesdirectory)/manifests/configmap.yml                
+  #               $(Build.sourcesdirectory)/manifests/rabbitmq-statefulset.yml                
+  #               $(Build.sourcesdirectory)/manifests/rabbitmq-service.yml
+
+
+  # - stage: Deploy
+  #   displayName: Deploy stage
+  #   dependsOn: Build
+
+  #   jobs:
+  #   - deployment: Deploy
+  #     displayName: Deploy
+  #     pool:
+  #       vmImage: $(vmImageName)
+  #     environment: 'Dev'
+  #     strategy:
+  #       runOnce:
+  #         deploy:
+  #           steps:
+  #           # - task: KubernetesManifest@0
+  #           #   displayName: Create imagePullSecret
+  #           #   inputs:
+  #           #     action: createSecret
+  #           #     secretName: $(imagePullSecret)
+  #           #     dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+                
+  #           - task: KubernetesManifest@0
+  #             displayName: Deploy to Kubernetes cluster
+  #             inputs:
+  #               action: deploy
+  #               manifests: |
+  #                 $(Pipeline.Workspace)/manifests/app.yml
+  #               imagePullSecrets: |
+  #                 $(imagePullSecret)
+  #               containers: |
+  #                 $(containerRegistry)/$(imageRepository):$(tag)
