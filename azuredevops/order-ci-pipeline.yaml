@@ -71,7 +71,7 @@ stages:
     - deployment: Deploy
       displayName: Deploy
       pool:
-        vmImage: $(vmImageName)
+        vmImage: ubuntu-latest
       environment: 'Dev'
       strategy:
         runOnce:
