@@ -87,6 +87,7 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
+                kubernetesServiceConnection: 'aks-svc-connection'
                 artifactName: 'kube-manifests' 
                 targetPath: '$(System.ArtifactsDirectory)'
 
