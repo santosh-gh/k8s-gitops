@@ -88,7 +88,7 @@ stages:
               inputs:
                 buildType: 'current'                
                 artifactName: 'kube-manifests' 
-                targetPath: '$(System.ArtifactsDirectory)'
+                targetPath: '$(System.ArtifactsDirectory)/manifests'
 
             - script: |
                 echo "Listing ArtifactsDirectory:"
@@ -101,11 +101,11 @@ stages:
                 kubernetesServiceConnection: 'aks-svc-connection'
                 namespace: $(namespace)
                 manifests: |
-                  $(System.ArtifactsDirectory)/manifest/order-deployment.yml
-                  $(System.ArtifactsDirectory)/manifest/order-service.yml
-                  $(System.ArtifactsDirectory)/manifest/product-deployment.yml
-                  $(System.ArtifactsDirectory)/manifest/product-service.yml
-                  $(System.ArtifactsDirectory)/manifest/store-front-deployment.yml
-                  $(System.ArtifactsDirectory)/manifest/store-front-service.yml
-                  $(System.ArtifactsDirectory)/manifest/rabbitmq-statefulset.yml
-                  $(System.ArtifactsDirectory)/manifest/rabbitmq-service.yml
+                  $(System.ArtifactsDirectory)/manifests/order-deployment.yml
+                  $(System.ArtifactsDirectory)/manifests/order-service.yml
+                  $(System.ArtifactsDirectory)/manifests/product-deployment.yml
+                  $(System.ArtifactsDirectory)/manifests/product-service.yml
+                  $(System.ArtifactsDirectory)/manifests/store-front-deployment.yml
+                  $(System.ArtifactsDirectory)/manifests/store-front-service.yml
+                  $(System.ArtifactsDirectory)/manifests/rabbitmq-statefulset.yml
+                  $(System.ArtifactsDirectory)/manifests/rabbitmq-service.yml
