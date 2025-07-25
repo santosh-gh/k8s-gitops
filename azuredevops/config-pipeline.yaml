@@ -38,9 +38,9 @@ stages:
             steps:
             - task: DownloadPipelineArtifact@2
               inputs:
-                buildType: 'current'                
-                artifactName: 'config-manifests' 
-                targetPath: '$(System.ArtifactsDirectory)/manifests/config'
+                buildType: current               
+                artifactName: config-manifests
+                targetPath: $(System.ArtifactsDirectory)/manifests/config
 
             - script: |
                 echo "Listing ArtifactsDirectory:"
