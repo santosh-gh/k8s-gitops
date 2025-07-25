@@ -33,19 +33,19 @@ stages:
               dockerFilePath: '$(Build.sourcesdirectory)/app/product-service/Dockerfile'
               tag: $(tag)
 
-  - stage: Deploy
-    displayName: Deploy product Service in AKS
-    jobs:     
-      - job: DeplyUsingManifest
-        steps:       
-          - task: KubernetesManifest@1
-            displayName: Deploy product Service
-            inputs:
-              action: 'deploy'
-              connectionType: 'azureResourceManager'
-              azureSubscriptionConnection: $(serviceConnection)
-              azureResourceGroup: $(aksResourceGroup)
-              kubernetesCluster: $(aksCluster)
-              manifests: |
-                $(Build.sourcesdirectory)/manifests/product-deployment.yml
-                $(Build.sourcesdirectory)/manifests/product-service.yml
+  # - stage: Deploy
+  #   displayName: Deploy product Service in AKS
+  #   jobs:     
+  #     - job: DeplyUsingManifest
+  #       steps:       
+  #         - task: KubernetesManifest@1
+  #           displayName: Deploy product Service
+  #           inputs:
+  #             action: 'deploy'
+  #             connectionType: 'azureResourceManager'
+  #             azureSubscriptionConnection: $(serviceConnection)
+  #             azureResourceGroup: $(aksResourceGroup)
+  #             kubernetesCluster: $(aksCluster)
+  #             manifests: |
+  #               $(Build.sourcesdirectory)/manifests/product-deployment.yml
+  #               $(Build.sourcesdirectory)/manifests/product-service.yml

@@ -94,10 +94,16 @@ stages:
                 echo "Listing ArtifactsDirectory:"
                 ls -R "$(System.ArtifactsDirectory)"
 
-            # - task: KubernetesManifest@0
-            #   displayName: Deploy to Kubernetes cluster
-            #   inputs:
-            #     action: deploy
-            #     manifests: |
-            #       $(System.ArtifactsDirectory)/manifest/order-deployment.yml
-            #       $(System.ArtifactsDirectory)/manifest/order-service.yml
+            - task: KubernetesManifest@0
+              displayName: Deploy to Kubernetes cluster
+              inputs:
+                action: deploy
+                manifests: |
+                  $(System.ArtifactsDirectory)/manifest/order-deployment.yml
+                  $(System.ArtifactsDirectory)/manifest/order-service.yml
+                  $(System.ArtifactsDirectory)/manifest/product-deployment.yml
+                  $(System.ArtifactsDirectory)/manifest/product-service.yml
+                  $(System.ArtifactsDirectory)/manifest/store-front-deployment.yml
+                  $(System.ArtifactsDirectory)/manifest/store-front-service.yml
+                  $(System.ArtifactsDirectory)/manifest/rabbitmq-statefulset.yml
+                  $(System.ArtifactsDirectory)/manifest/rabbitmq-service.yml
