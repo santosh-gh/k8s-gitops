@@ -94,18 +94,28 @@ stages:
                 echo "Listing ArtifactsDirectory:"
                 ls -R "$(System.ArtifactsDirectory)"
 
-            - task: KubernetesManifest@1
-              displayName: Deploy to Kubernetes cluster
+            - task: AzureCLI@2
+              displayName: 'Deploy to AKS with --validate=false'
               inputs:
-                action: deploy
-                kubernetesServiceConnection: 'aks-svc-connection'
-                namespace: $(namespace)
-                manifests: |
-                  $(System.ArtifactsDirectory)/manifests/order-deployment.yml
-                  $(System.ArtifactsDirectory)/manifests/order-service.yml
-                  $(System.ArtifactsDirectory)/manifests/product-deployment.yml
-                  $(System.ArtifactsDirectory)/manifests/product-service.yml
-                  $(System.ArtifactsDirectory)/manifests/store-front-deployment.yml
-                  $(System.ArtifactsDirectory)/manifests/store-front-service.yml
-                  $(System.ArtifactsDirectory)/manifests/rabbitmq-statefulset.yml
-                  $(System.ArtifactsDirectory)/manifests/rabbitmq-service.yml
+                azureSubscription: $(serviceConnection)
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                  az aks get-credentials --resource-group $(aksResourceGroup) --name $(aksCluster)
+                  kubectl apply -f $(System.ArtifactsDirectory)/manifests/ --validate=false
+
+            # - task: KubernetesManifest@1
+            #   displayName: Deploy to Kubernetes cluster
+            #   inputs:
+            #     action: deploy
+            #     kubernetesServiceConnection: 'aks-svc-connection'
+            #     namespace: $(namespace)
+            #     manifests: |
+            #       $(System.ArtifactsDirectory)/manifests/order-deployment.yml
+            #       $(System.ArtifactsDirectory)/manifests/order-service.yml
+            #       $(System.ArtifactsDirectory)/manifests/product-deployment.yml
+            #       $(System.ArtifactsDirectory)/manifests/product-service.yml
+            #       $(System.ArtifactsDirectory)/manifests/store-front-deployment.yml
+            #       $(System.ArtifactsDirectory)/manifests/store-front-service.yml
+            #       $(System.ArtifactsDirectory)/manifests/rabbitmq-statefulset.yml
+            #       $(System.ArtifactsDirectory)/manifests/rabbitmq-service.yml
